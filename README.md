@@ -24,6 +24,7 @@ pip install -r requirements.txt
 1. Make a copy of the `.env.test` and call it `.env`
 2. Go to the [Discord Developer Portal](https://discord.com/developers/applications) and create a bot account.
   - Follow this guide: https://discordpy.readthedocs.io/en/stable/discord.html#discord-intro
+  - Setup the `TOKEN` environment variable in `.env` using the Discord bot token
 3. Create a test Discord server
 4. Invite your bot to your server
 
