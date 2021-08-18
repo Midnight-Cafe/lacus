@@ -6,3 +6,6 @@
 
 # Virtualenv
 env
+
+# Python
+**.pyc
