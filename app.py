@@ -13,8 +13,12 @@ bot = commands.Bot(
 
 @bot.event
 async def on_member_join(member: discord.Member):
-    guild = await bot.fetch_guild(config.GUILD_ID)
-    role: discord.Role = guild.get_role(config.ROLE_ON_JOIN_ID)
+    await add_role(member, config.ROLE_ON_JOIN_ID)
+
+
+async def add_role(member: discord.Member, role_id: int):
+    role: discord.Role = member.guild.get_role(config.ROLE_ON_JOIN_ID)
     await member.add_roles(role)
+
 
 bot.run(config.DISCORD_TOKEN)
