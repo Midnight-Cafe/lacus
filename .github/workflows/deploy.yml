@@ -17,5 +17,5 @@ jobs:
             cd lacus
             git pull
             ./scripts/kill_running_process.sh
-            python3 app.py
+            python3 app.py &
             echo "Deployment successful"
