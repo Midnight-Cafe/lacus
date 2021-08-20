@@ -30,5 +30,5 @@ pip install -r requirements.txt
 
 #### To run locally:
 ```bash
-python bot.py
+python app.py
 ```
