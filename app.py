@@ -24,14 +24,17 @@ async def add_role(member: discord.Member, role_id: int):
     role: discord.Role = member.guild.get_role(config.ROLE_ON_JOIN_ID)
     await member.add_roles(role)
 
-def message_cog_maker(prompt):
-    if(prompt['type']=='question'):
-        bot.add_cog(ScheduledMessage(bot, prompt['message'], prompt['channelID'], prompt['intervalSeconds']))
+@bot.event
+async def on_ready():
+    def message_cog_maker(prompt):
+        if(prompt['type']=='question'):
+            print('eh')
+            bot.add_cog(ScheduledMessage(bot, prompt['message'], prompt['channelID'], prompt['intervalSeconds']))
+    if (os.path.isfile('./messages.json')):
+        f = open('./messages.json', 'r')
+        messages = json.loads(f.read())
+        list(map(message_cog_maker, messages['prompts']))
+        f.close()
 
-if (os.path.isfile('./messages.json')):
-    f = open('./messages.json', 'r')
-    messages = json.loads(f.read())
-    list(map(message_cog_maker, messages['prompts']))
-    f.close()
 
 bot.run(config.DISCORD_TOKEN)
