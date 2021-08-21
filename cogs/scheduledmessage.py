@@ -1,24 +1,22 @@
 from discord.ext import tasks, commands
 
 class ScheduledMessage(commands.Cog):
-    def __init__(self, bot: commands.Bot, message: str, channelID: int, intervalSeconds: int):
+    def __init__(self, bot: commands.Bot, message: str, channel_id: int, interval_seconds: int):
         self.bot = bot
         self.message = message
-        self.channelID = channelID
-        self.intervalSeconds = intervalSeconds
-        self.pass_interval(self.intervalSeconds)
+        self.channel_id = channel_id
+        self.interval_seconds = interval_seconds
+        # decorate printer and before_printer to allow dynamic interval be passed to tasks.loop
+        self.printer = tasks.loop(seconds=self.interval_seconds)(self.printer)
+        self.before_printer = self.printer.before_loop(self.before_printer)
+        self.printer.start()
 
     def cog_unload(self):
         self.printer.cancel()
 
-    def pass_interval(self, intervalSeconds):
-        @tasks.loop(seconds=intervalSeconds)
-        async def printer():
-            channel = self.bot.get_channel(self.channelID)
-            await channel.send(self.message)
+    async def printer(self):
+        channel = self.bot.get_channel(self.channel_id)
+        await channel.send(self.message)
 
-        @printer.before_loop
-        async def before_printer():
-            await self.bot.wait_until_ready()
-
-        printer.start()
+    async def before_printer(self):
+        await self.bot.wait_until_ready()

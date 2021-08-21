@@ -28,12 +28,13 @@ async def add_role(member: discord.Member, role_id: int):
 async def on_ready():
     def message_cog_maker(prompt):
         if(prompt['type']=='question'):
-            bot.add_cog(ScheduledMessage(bot, prompt['message'], prompt['channelID'], prompt['intervalSeconds']))
+            bot.add_cog(ScheduledMessage(bot, prompt['message'], prompt['channel_id'], prompt['interval_seconds']))
     if (os.path.isfile('./messages.json')):
-        f = open('./messages.json', 'r')
-        messages = json.loads(f.read())
-        list(map(message_cog_maker, messages['prompts']))
-        f.close()
+        messages_file = open('./messages.json', 'r')
+        messages_json = json.loads(messages_file.read())
+        for prompt in messages_json['prompts']:
+            message_cog_maker(prompt)
+        messages_file.close()
 
 
 bot.run(config.DISCORD_TOKEN)

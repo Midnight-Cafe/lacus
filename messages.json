@@ -3,14 +3,14 @@
     {
       "type": "question",
       "message": "Hello world",
-      "channelID": 1234,
-      "intervalSeconds": 10
+      "channel_id": 1234,
+      "interval_seconds": 10
     },
     {
       "type": "question",
       "message": "Hello people",
-      "channelID": 1234,
-      "intervalSeconds": 5
+      "channel_id": 1234,
+      "interval_seconds": 5
     }
   ]
 }
