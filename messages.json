@@ -1,0 +1,14 @@
+{
+  "prompts": [
+    {
+      "type": "question",
+      "message": "What are you currently working on today?",
+      "interval_seconds": 172800
+    },
+    {
+      "type": "question",
+      "message": "What challenges are you currently facing?",
+      "interval_seconds": 172800
+    }
+  ]
+}
