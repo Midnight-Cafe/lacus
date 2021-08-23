@@ -17,6 +17,3 @@ jobs:
             cd lacus
             (git pull || true) | echo $?
             bash ./scripts/kill_running_process.sh
-            source env/bin/activate
-            python3 app.py &
-            echo "Deployment successful"
