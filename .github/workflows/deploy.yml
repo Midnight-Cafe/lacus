@@ -1,7 +1,9 @@
 name: Lacus Deploy
 on:
-  push:
-    branches: [main]
+  commit:
+    branches: [fix-deployment]
+  # push:
+  #   branches: [main]
 
 jobs:
   deploy:
