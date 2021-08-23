@@ -16,4 +16,3 @@ jobs:
           script: |
             cd lacus
             (git pull || true) | echo $?
-            bash ./scripts/kill_running_process.sh
