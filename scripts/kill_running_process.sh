@@ -1,3 +1,9 @@
 #! /bin/bash
 
-ps aux | grep app.py | grep -v color | awk '{print $2}' | xargs kill > /dev/null 2>&1
+process_line=`ps aux | grep app.py | grep -v color`
+
+if [ $? -eq 0 ]; then
+  echo $process_line | awk '{print $2}' | xargs kill
+fi
+
+exit 0
