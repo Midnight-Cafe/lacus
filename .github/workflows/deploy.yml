@@ -17,4 +17,4 @@ jobs:
             cd lacus
             git pull origin main
             bash ./scripts/kill_running_process.sh
-            cat .env
+            bash ./scripts/run.sh
