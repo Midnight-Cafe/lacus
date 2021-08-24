@@ -6,17 +6,19 @@ class ScheduledMessage(commands.Cog):
         self.message = message
         self.channel_id = channel_id
         self.interval_seconds = interval_seconds
-        # decorate printer and before_printer to allow dynamic interval be passed to tasks.loop
-        self.printer = tasks.loop(seconds=self.interval_seconds)(self.printer)
-        self.before_printer = self.printer.before_loop(self.before_printer)
-        self.printer.start()
+        self.initialize_send_message()
 
     def cog_unload(self):
-        self.printer.cancel()
+        self.task_send_message.cancel()
 
-    async def printer(self):
+    def initialize_send_message(self):
+        self.task_send_message = tasks.loop(seconds=self.interval_seconds)(self.send_message)
+        self.task_send_message.before_loop(self.before_send_message)
+        self.task_send_message.start()
+
+    async def send_message(self):
         channel = self.bot.get_channel(self.channel_id)
         await channel.send(self.message)
 
-    async def before_printer(self):
+    async def before_send_message(self):
         await self.bot.wait_until_ready()
