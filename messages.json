@@ -1,0 +1,16 @@
+{
+  "prompts": [
+    {
+      "type": "question",
+      "message": "Hello world",
+      "channel_id": 1234,
+      "interval_seconds": 10
+    },
+    {
+      "type": "question",
+      "message": "Hello people",
+      "channel_id": 1234,
+      "interval_seconds": 5
+    }
+  ]
+}
