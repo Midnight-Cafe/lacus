@@ -5,7 +5,7 @@ from discord.ext import tasks, commands
 
 def build_scheduled_message_cog(bot, prompt):
     if prompt["type"] == "question":
-        return ScheduledMessage(
+        return ScheduledMessageCog(
             bot,
             prompt["message"],
             prompt["channel_id"],
@@ -13,7 +13,7 @@ def build_scheduled_message_cog(bot, prompt):
         )
 
 
-class ScheduledMessage(commands.Cog):
+class ScheduledMessageCog(commands.Cog):
     def __init__(
         self,
         bot: commands.Bot,

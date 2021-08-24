@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 
 
-class Members:
+class MembersCog:
     def __init__(self, bot: commands.Bot, role_on_join_id: int):
         self.bot = bot
         self.role_on_join_id = role_on_join_id
