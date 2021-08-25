@@ -36,4 +36,4 @@ class LacusConfig:
     def _check_all_required_envs(self):
         not_found = set(self.required_env) - set(os.environ)
         if len(not_found) > 0:
-            raise IncorrectConfigurationError(', '.join(not_found))
+            raise IncorrectConfigurationError(", ".join(not_found))
