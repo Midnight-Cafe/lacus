@@ -9,7 +9,7 @@ Website: https://midnight.cafe/
 GitHub: https://github.com/Midnight-Cafe/
 
 **Weekly Sync**
-Channel: #weekly-sync
+Channel: <#874891536565960725>
 Voice Channel: <#879993682709843969>
 Every week we meet to talk about anything related to software development. This
 is where we present updates in the community, and is also a place to share and
@@ -22,3 +22,5 @@ Here at The Midnight Café we work on various projects. Check out the different
 ongoing projects under the _Community Projects_ category. If you are interested
 in contributing to any of them go to #roles and assign yourself the appropriate
 role.
+
+_Last Updated: $last_updated_
