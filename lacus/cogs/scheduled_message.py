@@ -1,7 +1,19 @@
+import json
+
 from discord.ext import tasks, commands
 
 
-class ScheduledMessage(commands.Cog):
+def build_scheduled_message_cog(bot, prompt):
+    if prompt["type"] == "question":
+        return ScheduledMessageCog(
+            bot,
+            prompt["message"],
+            prompt["channel_id"],
+            prompt["interval_seconds"],
+        )
+
+
+class ScheduledMessageCog(commands.Cog):
     def __init__(
         self,
         bot: commands.Bot,
@@ -15,13 +27,19 @@ class ScheduledMessage(commands.Cog):
         self.interval_seconds = interval_seconds
         self.initialize_send_message()
 
+    @staticmethod
+    def build_cogs(bot: commands.Bot, messages_file: str):
+        with open(messages_file, "r") as messages_file:
+            messages_json = json.loads(messages_file.read())
+            for prompt in messages_json["prompts"]:
+                bot.add_cog(build_scheduled_message_cog(bot, prompt))
+
     def cog_unload(self):
         self.task_send_message.cancel()
 
     def initialize_send_message(self):
-        self.task_send_message = tasks.loop(seconds=self.interval_seconds)(
-            self.send_message
-        )
+        loop = tasks.loop(seconds=self.interval_seconds)
+        self.task_send_message = loop(self.send_message)
         self.task_send_message.before_loop(self.before_send_message)
         self.task_send_message.start()
 
