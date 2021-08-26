@@ -1,6 +1,6 @@
-# Contributing to "project"
+# Contributing to Lacus
 
-The main purpose of this project is "objective"
+The main purpose of this project is to develop a moderation and general purpose Discord bot.
 
 ## Summary
 
