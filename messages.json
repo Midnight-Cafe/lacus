@@ -2,15 +2,13 @@
   "prompts": [
     {
       "type": "question",
-      "message": "Hello world",
-      "channel_id": 1234,
-      "interval_seconds": 10
+      "message": "What are you currently working on today?",
+      "interval_seconds": 172800
     },
     {
       "type": "question",
-      "message": "Hello people",
-      "channel_id": 1234,
-      "interval_seconds": 5
+      "message": "What challenges are you currently facing?",
+      "interval_seconds": 172800
     }
   ]
 }
