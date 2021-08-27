@@ -13,9 +13,7 @@ def main():
         command_prefix=config.BOT_PREFIX,
     )
     bot.add_cog(MembersCog(bot, role_on_join_id=config.ROLE_ON_JOIN_ID))
-    scheduled_messages_cogs = ScheduledMessageCog.build_cogs(bot, "./messages.json")
-    for scheduled_messages_cog in scheduled_messages_cogs:
-        bot.add_cog(scheduled_messages_cog)
+    bot.add_cog(ScheduledMessageCog(bot))
     bot.run(config.DISCORD_TOKEN)
 
 
