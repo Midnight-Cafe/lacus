@@ -55,9 +55,14 @@ class ScheduledMessageCog(commands.Cog):
         if not self.messages:
             await ctx.send("There are no scheduled messages on this channel.")
             return
-        options = [f"[{key}] {option}" for key, option in enumerate(self.messages)]
+        options = [
+            f"[{key}] {option}" for key, option in enumerate(self.messages)
+        ]
         options_str = "\n".join(options)
-        message = f"""```These are the scheduled messages for this channel:\n{options_str}```"""
+        template = (
+            "```These are the scheduled messages for this channel:\n%s```"
+        )
+        message = template % options_str
         await ctx.send(message)
 
     @scheduled_messages.group()

@@ -26,7 +26,8 @@ def config(event_loop):
 @pytest.mark.asyncio
 async def test_add_message(config):
     owner_member = config.members[0]
-    await dpytest.message("!scheduled_messages add 'Hello world'", member=owner_member)
+    message = "!scheduled_messages add 'Hello world'"
+    await dpytest.message(message, member=owner_member)
     assert (
         dpytest.verify()
         .message()
@@ -37,9 +38,23 @@ async def test_add_message(config):
 @pytest.mark.asyncio
 async def test_empty_list(config):
     owner_member = config.members[0]
-    await dpytest.message("!scheduled_messages list", member=owner_member)
+    message = "!scheduled_messages list"
+    await dpytest.message(message, member=owner_member)
     assert (
         dpytest.verify()
         .message()
         .content("There are no scheduled messages on this channel.")
     )
+
+
+@pytest.mark.asyncio
+async def test_add_and_list(config):
+    owner_member = config.members[0]
+    scheduled_message = "Hello world"
+    message = f'!scheduled_messages add "{scheduled_message}"'
+    await dpytest.message(message, member=owner_member)
+    assert dpytest.verify().message().contains().content("Key: [`0`]")
+
+    message = "!scheduled_messages list"
+    await dpytest.message(message, member=owner_member)
+    assert dpytest.verify().message().contains().content(scheduled_message)
