@@ -1,5 +1,6 @@
 import datetime
 import hashlib
+import pytz
 
 import discord
 from discord.ext import commands
@@ -25,6 +26,24 @@ async def add_role(member: discord.Member, role_id: int):
     role: discord.Role = member.guild.get_role(config.ROLE_ON_JOIN_ID)
     await member.add_roles(role)
 
+@bot.command(name="event")
+async def add_event(ctx,event_name, date, time, tz):
+    day, month, year = date.split("/")
+    hour, minute = time.split(":")
+    timezone = pytz.timezone(tz.strip())
+
+    dt = timezone.localize(datetime.datetime(int(year), int(month), int(day), int(hour), int(minute)))
+    date_format = "%d-%b-%Y %H:%M"
+    timezones_list = ['America/Los_Angeles', 'Canada/Central', 'Asia/Singapore']
+
+    if (tz not in timezones_list):
+        timezones_list.append(tz)
+    reply_message = f'```Event name: {event_name}\nScheduled for:\n'
+    for zone in timezones_list:
+        localDateTime = dt.astimezone(pytz.timezone(zone))
+        reply_message+= f'{zone}: {localDateTime.strftime(date_format)}\n'
+    reply_message+='```'
+    await ctx.send(reply_message)
 
 async def set_welcome_message():
     channel: discord.TextChannel = bot.get_channel(876672670903717948)
