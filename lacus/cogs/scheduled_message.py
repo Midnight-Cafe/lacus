@@ -7,9 +7,9 @@ from lacus.permissions import is_owner
 
 class ScheduledMessageCog(commands.Cog):
     interval = {
-        "seconds": 5,
+        "seconds": 0,
         "minutes": 0,
-        "hours": 0,
+        "hours": 24,
     }
     permissions = [is_owner]
 
@@ -33,15 +33,15 @@ class ScheduledMessageCog(commands.Cog):
             self.channel = ctx.channel
         if self.messages:
             self.task_loop.start()
-            return
-        await ctx.channel.send("No messages!")
-        if self.task_loop.is_running():
-            self.task_loop.stop()
+            await ctx.send("Scheduled messages have been started.")
+        else:
+            await ctx.send("No messages!")
 
     @scheduled_messages.group()
     async def stop(self, ctx: commands.Context):
         if self.task_loop.is_running():
             self.task_loop.stop()
+            await ctx.send("Scheduled messages have been stopped.")
 
     @scheduled_messages.group()
     async def add(self, ctx: commands.Context, scheduled_message):
@@ -74,6 +74,6 @@ class ScheduledMessageCog(commands.Cog):
 
     async def task(self):
         random_index = random.randint(0, len(self.messages) - 1)
-        template = ":exclamation: *Question of the day:* **%s**"
+        template = ":exclamation: **%s**"
         message = template % self.messages[random_index]
         await self.channel.send(message)
