@@ -30,10 +30,12 @@ class LacusConfig:
         self.BOT_PREFIX = os.environ.get("BOT_PREFIX")
         self.GUILD_ID = int(os.environ.get("GUILD_ID"))
         self.ROLE_ON_JOIN_ID = int(os.environ.get("ROLE_ON_JOIN_ID"))
+        self.SCHEDULED_MESSAGES_CHANNEL_ID = int(os.environ.get("PROMPTS_CHANNEL_ID"))
+
         self.INTENTS = discord.Intents.default()
         self.INTENTS.members = True
 
     def _check_all_required_envs(self):
         not_found = set(self.required_env) - set(os.environ)
         if len(not_found) > 0:
-            raise IncorrectConfigurationError(', '.join(not_found))
+            raise IncorrectConfigurationError(", ".join(not_found))
