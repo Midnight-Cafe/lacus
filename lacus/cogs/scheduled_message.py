@@ -1,51 +1,79 @@
-import json
+import random
 
 from discord.ext import tasks, commands
 
-
-def build_scheduled_message_cog(bot, prompt):
-    if prompt["type"] == "question":
-        return ScheduledMessageCog(
-            bot,
-            prompt["message"],
-            prompt["channel_id"],
-            prompt["interval_seconds"],
-        )
+from lacus.permissions import is_owner
 
 
 class ScheduledMessageCog(commands.Cog):
-    def __init__(
-        self,
-        bot: commands.Bot,
-        message: str,
-        channel_id: int,
-        interval_seconds: int,
-    ):
-        self.bot = bot
-        self.message = message
-        self.channel_id = channel_id
-        self.interval_seconds = interval_seconds
-        self.initialize_send_message()
+    interval = {
+        "seconds": 5,
+        "minutes": 0,
+        "hours": 0,
+    }
+    permissions = [is_owner]
 
-    @staticmethod
-    def build_cogs(bot: commands.Bot, messages_file: str):
-        with open(messages_file, "r") as messages_file:
-            messages_json = json.loads(messages_file.read())
-            for prompt in messages_json["prompts"]:
-                bot.add_cog(build_scheduled_message_cog(bot, prompt))
+    def __init__(self, bot: commands.Bot):
+        self.bot = bot
+        self.channel = None
+        self.messages = []
+
+        # Initialize task loop
+        loop = tasks.loop(**self.interval)
+        self.task_loop = loop(self.task)
+
+    @commands.group()
+    @commands.check_any(is_owner())
+    async def scheduled_messages(self, ctx: commands.Context):
+        pass
+
+    @scheduled_messages.group()
+    async def start(self, ctx: commands.Context):
+        if not self.channel:
+            self.channel = ctx.channel
+        if self.messages:
+            self.task_loop.start()
+            return
+        await ctx.channel.send("No messages!")
+        if self.task_loop.is_running():
+            self.task_loop.stop()
+
+    @scheduled_messages.group()
+    async def stop(self, ctx: commands.Context):
+        if self.task_loop.is_running():
+            self.task_loop.stop()
+
+    @scheduled_messages.group()
+    async def add(self, ctx: commands.Context, scheduled_message):
+        self.messages.append(scheduled_message)
+        key = len(self.messages) - 1
+        message = f"**Scheduled message has been created! Key: [`{key}`]**"
+        await ctx.send(message)
+
+    @scheduled_messages.group()
+    async def list(self, ctx: commands.Context):
+        if not self.messages:
+            await ctx.send("There are no scheduled messages on this channel.")
+            return
+        options = [
+            f"[{key}] {option}" for key, option in enumerate(self.messages)
+        ]
+        options_str = "\n".join(options)
+        template = (
+            "```These are the scheduled messages for this channel:\n%s```"
+        )
+        message = template % options_str
+        await ctx.send(message)
+
+    @scheduled_messages.group()
+    async def frequency(self, ctx: commands.Context, hours):
+        self.task_loop.change_interval(hours=int(hours))
 
     def cog_unload(self):
-        self.task_send_message.cancel()
+        self.task_loop.cancel()
 
-    def initialize_send_message(self):
-        loop = tasks.loop(seconds=self.interval_seconds)
-        self.task_send_message = loop(self.send_message)
-        self.task_send_message.before_loop(self.before_send_message)
-        self.task_send_message.start()
-
-    async def send_message(self):
-        channel = self.bot.get_channel(self.channel_id)
-        await channel.send(self.message)
-
-    async def before_send_message(self):
-        await self.bot.wait_until_ready()
+    async def task(self):
+        random_index = random.randint(0, len(self.messages) - 1)
+        template = ":exclamation: *Question of the day:* **%s**"
+        message = template % self.messages[random_index]
+        await self.channel.send(message)
