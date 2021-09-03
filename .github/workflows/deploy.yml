@@ -15,8 +15,8 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           script: |
             cd lacus
-            git pull
+            git pull origin main
             bash ./scripts/kill_running_process.sh
             source env/bin/activate
-            python3 app.py
-            echo "Deployment successful"
+            pip install -r requirements.txt
+            screen -d -m python3 app.py
