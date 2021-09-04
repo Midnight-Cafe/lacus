@@ -25,8 +25,8 @@ class TimeCog(commands.Cog):
         reply_message = f'```{date} {time} in {tz} converted to other timezones:\n'
         for zone in self.timezones:
             localDateTime = dt.astimezone(pytz.timezone(zone))
-            reply_message+= f'{zone:20s}: {localDateTime.strftime(date_format)}\n'
-        reply_message+='```'
+            reply_message += f'{zone:20s}: {localDateTime.strftime(date_format)}\n'
+        reply_message +='```'
         await ctx.send(reply_message)
         
     @time.group()
@@ -50,3 +50,12 @@ class TimeCog(commands.Cog):
         
         self.timezones.remove(timezone)
         await ctx.send(f'{timezone} has been deleted.')
+
+    @time.group()
+    async def list_timezones(self, ctx:commands.Context):
+        message = f'```List of timezones: \n'
+        for timezone in self.timezones:
+            message +=  f'{timezone}\n'
+        message += f'```'
+        await ctx.send(message)
+        
