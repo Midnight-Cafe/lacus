@@ -41,3 +41,12 @@ class TimeCog(commands.Cog):
         
         self.timezones.append(timezone)
         await ctx.send(f'{timezone} has been added!')
+
+    @time.group()
+    async def delete_timezone(self, ctx:commands.Context, timezone):
+        if (timezone not in self.timezones):
+            await ctx.send(f'{timezone} is not in the list!')
+            return
+        
+        self.timezones.remove(timezone)
+        await ctx.send(f'{timezone} has been deleted.')
