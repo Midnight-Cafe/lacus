@@ -36,7 +36,7 @@ class TimeCog(commands.Cog):
             return
         
         if (timezone not in pytz.all_timezones):
-            await ctx.send("Please enter a valid timezone name.\n A list of timezonen names can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones ")
+            await ctx.send("Please enter a valid timezone name.\n A list of timezones names can be found here: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones ")
             return
         
         self.timezones.append(timezone)
