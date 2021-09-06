@@ -1,7 +1,7 @@
 import discord
+import pytest
 from discord.ext import commands
 from discord.ext import test as dpytest
-import pytest
 
 from lacus.cogs.scheduled_message import ScheduledMessageCog
 
