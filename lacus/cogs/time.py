@@ -6,7 +6,6 @@ import pytz
 class TimeCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-        self.channel = None
         self.timezones = ['America/Los_Angeles', 'Canada/Central', 'Asia/Singapore']
 
     @commands.group()
