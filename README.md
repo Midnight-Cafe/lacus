@@ -36,8 +36,8 @@ pip install -r requirements.txt
 - Follow this guide: https://discordpy.readthedocs.io/en/stable/discord.html#discord-intro
 - Setup the `TOKEN` environment variable in `.env` using the Discord bot token
 
-4. Invite the bot to your server.
-5. Populate `config.yml` based on your test server.
+5. Invite the bot to your server.
+6. Populate `config.yml` based on your test server.
 
 #### To run locally:
 
