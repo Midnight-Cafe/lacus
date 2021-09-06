@@ -1,0 +1,6 @@
+bot_prefix:
+guild_id:
+roles:
+  on_join:
+channels:
+  welcome:

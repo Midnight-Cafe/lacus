@@ -1,24 +1,17 @@
-from lacus.cogs.time import TimeCog
+from lacus.bot import LacusBot
 from lacus.cogs.general import GeneralCog
-from discord.ext import commands
-from lacus.cogs.scheduled_message import ScheduledMessageCog
 from lacus.cogs.members import MembersCog
-
-from lacus.setup import LacusConfig
+from lacus.cogs.scheduled_message import ScheduledMessageCog
+from lacus.cogs.time import TimeCog
 
 
 def main():
-    config = LacusConfig()
-
-    bot = commands.Bot(
-        intents=config.INTENTS,
-        command_prefix=config.BOT_PREFIX,
-    )
-    bot.add_cog(GeneralCog(bot, role_on_join_id=config.ROLE_ON_JOIN_ID))
-    bot.add_cog(MembersCog(bot, role_on_join_id=config.ROLE_ON_JOIN_ID))
+    bot = LacusBot()
+    bot.add_cog(GeneralCog(bot))
+    bot.add_cog(MembersCog(bot))
     bot.add_cog(ScheduledMessageCog(bot))
     bot.add_cog(TimeCog(bot))
-    bot.run(config.DISCORD_TOKEN)
+    bot.run()
 
 
 if __name__ == "__main__":
