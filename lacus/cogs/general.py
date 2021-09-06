@@ -17,6 +17,8 @@ def _check_hash_is_different(left, right):
 
 
 class GeneralCog(commands.Cog):
+    WELCOME_MESSAGE_FILE_LOCATION = "./docs/welcome.md"
+
     def __init__(self, bot: "LacusBot"):
         self.bot = bot
 
@@ -33,17 +35,13 @@ class GeneralCog(commands.Cog):
         Creates the welcome message if there is none set in the designated
         Welcome channel, otherwise edit the existing one.
         """
-        message = None
+        with open(self.WELCOME_MESSAGE_FILE_LOCATION) as welcome_message_file:
+            welcome_message = welcome_message_file.read()
+        content = await self._hydrate_welcome_message(welcome_message)
         try:
             message_id = channel.last_message_id
             message: discord.Message = await channel.fetch_message(message_id)
         except discord.errors.HTTPException:
-            pass
-
-        with open("./docs/welcome.md") as welcome_message_file:
-            welcome_message = welcome_message_file.read()
-        content = await self._hydrate_welcome_message(welcome_message)
-        if not message:
             print(
                 "Could not find existing Welcome message. Creating a new one."
             )
@@ -53,6 +51,9 @@ class GeneralCog(commands.Cog):
 
             # Only update if there is any changes otherwise do nothing.
             if _check_hash_is_different(message.content, welcome_message):
+                print(
+                    "Existing Welcome message found. Updating current message."
+                )
                 await message.edit(content=content, suppress=True)
 
     async def _hydrate_welcome_message(self, message_template):
