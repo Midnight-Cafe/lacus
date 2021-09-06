@@ -51,6 +51,14 @@ class ScheduledMessageCog(commands.Cog):
         await ctx.send(message)
 
     @scheduled_messages.group()
+    async def delete(self, ctx: commands.Context, scheduled_message_id):
+        id = int(scheduled_message_id)
+        message = self.messages[id]
+        self.messages.pop(id)
+        message = f"**Scheduled message ``` {message} ``` has been deleted!**"
+        await ctx.send(message)
+
+    @scheduled_messages.group()
     async def list(self, ctx: commands.Context):
         if not self.messages:
             await ctx.send("There are no scheduled messages on this channel.")
