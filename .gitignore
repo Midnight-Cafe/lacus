@@ -1,5 +1,6 @@
-# Environment variables file
+# Configs
 .env
+config.yml
 
 # VSCode stuff
 .vscode

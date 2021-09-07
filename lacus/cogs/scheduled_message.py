@@ -1,6 +1,6 @@
 import random
 
-from discord.ext import tasks, commands
+from discord.ext import commands, tasks
 
 from lacus.permissions import is_owner
 
